@@ -12,6 +12,7 @@ import io.reactivex.rxkotlin.addTo
 import mozilla.lockbox.R
 import mozilla.lockbox.action.DataStoreAction
 import mozilla.lockbox.action.RouteAction
+import mozilla.lockbox.extensions.mapToItemViewModelList
 import mozilla.lockbox.flux.Dispatcher
 
 import mozilla.lockbox.flux.Presenter
@@ -51,27 +52,11 @@ class ItemListPresenter(
 
         dataStore.list
                 .filter { it.isNotEmpty() }
-                .map {
-                    it.map {
-                        val username = it.username ?: ""
-                        val hostname = titleFromHostname(it.hostname)
-                        ItemViewModel(
-                                hostname,
-                                username,
-                                it.id)
-                    }
-                }
+                .mapToItemViewModelList()
                 .subscribe(view::updateItems)
                 .addTo(compositeDisposable)
 
         // TODO: remove this when we have proper locking / unlocking
         dispatcher.dispatch(DataStoreAction(DataStoreAction.Type.UNLOCK))
-    }
-
-    private fun titleFromHostname(hostname: String): String {
-        return hostname
-                .replace(Regex("^http://"), "")
-                .replace(Regex("^https://"), "")
-                .replace(Regex("^www\\d*\\."), "")
     }
 }

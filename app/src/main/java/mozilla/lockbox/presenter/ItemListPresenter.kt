@@ -65,7 +65,7 @@ class ItemListPresenter(
                 .addTo(compositeDisposable)
 
         // TODO: remove this when we have proper locking / unlocking
-        dispatcher.dispatch(DataStoreAction(DataStoreAction.Type.UNLOCK))
+        dispatcher.dispatch(DataStoreAction.UNLOCK)
     }
 
     private fun titleFromHostname(hostname: String): String {

@@ -22,6 +22,7 @@ import mozilla.lockbox.store.DataStore
 
 interface ItemListView {
     val drawerItemSelections: Observable<MenuItem>
+    val filterClick: Observable<Unit>
     fun updateItems(itemList: List<ItemViewModel>)
     fun closeDrawers()
     // TODO: Item list selection
@@ -54,6 +55,12 @@ class ItemListPresenter(
                 .filter { it.isNotEmpty() }
                 .mapToItemViewModelList()
                 .subscribe(view::updateItems)
+                .addTo(compositeDisposable)
+
+        view.filterClick
+                .subscribe {
+                    dispatcher.dispatch(RouteAction.FILTER)
+                }
                 .addTo(compositeDisposable)
 
         // TODO: remove this when we have proper locking / unlocking

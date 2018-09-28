@@ -17,7 +17,8 @@ class ItemListAdapter : RecyclerView.Adapter<ItemViewHolder>() {
     private var itemList: List<ItemViewModel>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.list_cell_item, parent, false)
+        val inflater = LayoutInflater.from(parent.context)
+        val view = inflater.inflate(R.layout.list_cell_item, parent, false)
 
         return ItemViewHolder(view)
     }
